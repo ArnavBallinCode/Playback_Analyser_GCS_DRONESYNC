@@ -1,0 +1,60 @@
+[
+  {
+    "type": "takeoff",
+    "message": "Drone takeoff initiated",
+    "timestamp": "2025-07-30T10:00:00.000Z",
+    "priority": "high",
+    "system": "flight_controller"
+  },
+  {
+    "type": "waypoint_reached",
+    "message": "Reached waypoint 1",
+    "timestamp": "2025-07-30T10:02:15.000Z",
+    "priority": "normal",
+    "waypoint_id": "WP001",
+    "coordinates": { "x": 2.5, "y": 1.8, "z": 1.5 }
+  },
+  {
+    "type": "mission_start",
+    "message": "Mission sequence started",
+    "timestamp": "2025-07-30T10:03:00.000Z",
+    "priority": "high",
+    "mission_id": "MISSION_001"
+  },
+  {
+    "type": "warning",
+    "message": "Low battery warning - 20% remaining",
+    "timestamp": "2025-07-30T10:05:30.000Z",
+    "priority": "high",
+    "battery_level": 20
+  },
+  {
+    "type": "waypoint_reached",
+    "message": "Reached waypoint 2",
+    "timestamp": "2025-07-30T10:06:45.000Z",
+    "priority": "normal",
+    "waypoint_id": "WP002",
+    "coordinates": { "x": -1.2, "y": 3.4, "z": 2.0 }
+  },
+  {
+    "type": "emergency",
+    "message": "Emergency landing protocol activated",
+    "timestamp": "2025-07-30T10:08:00.000Z",
+    "priority": "critical",
+    "reason": "low_battery"
+  },
+  {
+    "type": "landing",
+    "message": "Emergency landing completed",
+    "timestamp": "2025-07-30T10:08:45.000Z",
+    "priority": "high",
+    "landing_type": "emergency"
+  },
+  {
+    "type": "mission_complete",
+    "message": "Mission ended due to emergency",
+    "timestamp": "2025-07-30T10:09:00.000Z",
+    "priority": "normal",
+    "status": "emergency_termination"
+  }
+]
