@@ -34,6 +34,7 @@ export default function DashboardSafeSpot() {
   const [jetsonData, setJetsonData] = useState<JetsonData | null>(null)
   const [jetsonStatus, setJetsonStatus] = useState<'connected' | 'disconnected' | 'error'>('disconnected')
   const [lastJetsonUpdate, setLastJetsonUpdate] = useState<string>('')
+<<<<<<< HEAD
 
   // State for uploaded safe spots
   const [uploadedSafeSpots, setUploadedSafeSpots] = useState<SafeSpot[]>([])
@@ -41,6 +42,15 @@ export default function DashboardSafeSpot() {
 
   // State for drone path trail
   const [dronePath, setDronePath] = useState<{ x: number, y: number }[]>([])
+=======
+  
+  // State for uploaded safe spots
+  const [uploadedSafeSpots, setUploadedSafeSpots] = useState<SafeSpot[]>([])
+  const [uploadedArena, setUploadedArena] = useState<ArenaCorner[]>([])
+  
+  // State for drone path trail
+  const [dronePath, setDronePath] = useState<{x: number, y: number}[]>([])
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
   const maxPathLength = 100 // Maximum number of points to keep in trail
 
   const { mode, playbackData, playbackIndex, isPlaybackPlaying } = useAutoCollect()
@@ -53,6 +63,7 @@ export default function DashboardSafeSpot() {
     return Math.sqrt(Math.pow(pos1.x - pos2.x, 2) + Math.pow(pos1.y - pos2.y, 2))
   }
 
+<<<<<<< HEAD
   // Convert coordinates to local field coordinates - SIMPLIFIED
   const coordsToFieldCoords = (coords: { lat: number, lng: number }): { x: number, y: number } => {
     // For safe spots: lat = x coordinate, lng = y coordinate (direct field coordinates)
@@ -60,6 +71,32 @@ export default function DashboardSafeSpot() {
     return {
       x: Math.max(-9, Math.min(9, coords.lat)),   // x coordinate (-9 to +9m)
       y: Math.max(-13, Math.min(13, coords.lng))  // y coordinate (-13 to +13m)
+=======
+  // Convert coordinates to local field coordinates
+  const coordsToFieldCoords = (coords: { lat: number, lng: number }, arena: ArenaCorner[]): { x: number, y: number } => {
+    if (arena.length < 4) {
+      // Fallback to simple conversion if arena not available
+      return {
+        x: Math.max(0, Math.min(9, (coords.lat - 12.03) * 1000)),
+        y: Math.max(0, Math.min(12, (coords.lng - 77.12) * 1000))
+      }
+    }
+
+    // Find bounding box of arena
+    const minLat = Math.min(...arena.map(c => c.lat))
+    const maxLat = Math.max(...arena.map(c => c.lat))
+    const minLng = Math.min(...arena.map(c => c.lng))
+    const maxLng = Math.max(...arena.map(c => c.lng))
+
+    // Convert coordinates to normalized coordinates (0-1)
+    const normalizedX = (coords.lng - minLng) / (maxLng - minLng)
+    const normalizedY = (coords.lat - minLat) / (maxLat - minLat)
+
+    // Scale to field dimensions (9x12 meters)
+    return {
+      x: Math.max(0, Math.min(9, normalizedX * 9)),
+      y: Math.max(0, Math.min(12, normalizedY * 12))
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
     }
   }
 
@@ -102,21 +139,35 @@ export default function DashboardSafeSpot() {
   useEffect(() => {
     if (mode === 'playback' && playbackData.length > 0 && playbackIndex < playbackData.length) {
       const currentData = playbackData[playbackIndex]
+<<<<<<< HEAD
 
       if (currentData) {
         // Extract position data from the current playback point
         let fieldX = 0, fieldY = 0
 
+=======
+      
+      if (currentData) {
+        // Extract position data from the current playback point
+        let fieldX = 0, fieldY = 0
+        
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
         // Try to get position from different possible data structures
         if (currentData.position) {
           // Historical data format
           const posData = currentData.position
+<<<<<<< HEAD
           fieldX = Math.max(-9, Math.min(9, posData.x))
           fieldY = Math.max(-13, Math.min(13, posData.y))
+=======
+          fieldX = Math.max(0, Math.min(9, posData.x + 4.5))
+          fieldY = Math.max(0, Math.min(12, posData.y + 6))
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
           setConnectionStatus(`Playback - Position (${playbackIndex + 1}/${playbackData.length})`)
         } else if (currentData.LOCAL_POSITION_NED) {
           // MAVLink format
           const localData = currentData.LOCAL_POSITION_NED
+<<<<<<< HEAD
           fieldX = Math.max(-9, Math.min(9, localData.x))
           fieldY = Math.max(-13, Math.min(13, localData.y))
           setConnectionStatus(`Playback - NED (${localData.time_boot_ms || 'N/A'}ms)`)
@@ -134,6 +185,25 @@ export default function DashboardSafeSpot() {
 
         setCurrentPosition({ x: fieldX, y: fieldY })
 
+=======
+          fieldX = Math.max(0, Math.min(9, localData.x + 4.5))
+          fieldY = Math.max(0, Math.min(12, localData.y + 6))
+          setConnectionStatus(`Playback - NED (${localData.time_boot_ms || 'N/A'}ms)`)
+        } else if (currentData.GLOBAL_POSITION_INT) {
+          const globalData = currentData.GLOBAL_POSITION_INT
+          fieldX = Math.max(0, Math.min(9, (globalData.lat / 1000000) % 9))
+          fieldY = Math.max(0, Math.min(12, (globalData.lon / 1000000) % 12))
+          setConnectionStatus(`Playback - Global (${globalData.time_boot_ms || 'N/A'}ms)`)
+        } else if (currentData.x !== undefined && currentData.y !== undefined) {
+          // Direct x,y coordinates
+          fieldX = Math.max(0, Math.min(9, currentData.x + 4.5))
+          fieldY = Math.max(0, Math.min(12, currentData.y + 6))
+          setConnectionStatus(`Playback - Direct (${playbackIndex + 1}/${playbackData.length})`)
+        }
+        
+        setCurrentPosition({ x: fieldX, y: fieldY })
+        
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
         // Update drone path trail
         setDronePath(prevPath => {
           const newPath = [...prevPath, { x: fieldX, y: fieldY }]
@@ -141,7 +211,11 @@ export default function DashboardSafeSpot() {
           return newPath.length > maxPathLength ? newPath.slice(-maxPathLength) : newPath
         })
         setJetsonStatus('connected')
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
         console.log(`Safespot position updated: Index ${playbackIndex}, X: ${fieldX}, Y: ${fieldY}`)
       }
     } else if (mode === 'playback') {
@@ -166,18 +240,30 @@ export default function DashboardSafeSpot() {
     const handleSafeSpotsUpload = (event: any) => {
       const { spots, arena } = event.detail
       setUploadedSafeSpots(spots)
+<<<<<<< HEAD
 
+=======
+      
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
       // Convert arena object to array format
       if (arena) {
         const arenaArray = Object.values(arena) as ArenaCorner[]
         setUploadedArena(arenaArray)
       }
+<<<<<<< HEAD
 
+=======
+      
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
       console.log('Safe spots uploaded to arena:', spots.length, 'spots')
     }
 
     window.addEventListener('safeSpotsUploaded', handleSafeSpotsUpload)
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
     return () => {
       window.removeEventListener('safeSpotsUploaded', handleSafeSpotsUpload)
     }
@@ -189,7 +275,11 @@ export default function DashboardSafeSpot() {
 
     jetsonData.safeSpots.forEach(spot => {
       // Convert coordinate safe spot to field coordinates
+<<<<<<< HEAD
       const spotFieldCoords = coordsToFieldCoords(spot)
+=======
+      const spotFieldCoords = coordsToFieldCoords(spot, jetsonData.arena)
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
       const distance = calculateDistance(currentPosition, spotFieldCoords)
 
       if (distance <= DETECTION_THRESHOLD && !detectedSpots.includes(spot.id)) {
@@ -211,6 +301,7 @@ export default function DashboardSafeSpot() {
     })
   }, [currentPosition, jetsonData, detectedSpots])
 
+<<<<<<< HEAD
   // Check if drone is at any uploaded safe spot
   useEffect(() => {
     if (uploadedSafeSpots.length === 0) return
@@ -239,6 +330,8 @@ export default function DashboardSafeSpot() {
     })
   }, [currentPosition, uploadedSafeSpots, detectedSpots])
 
+=======
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
   // Convert arena coordinates to field coordinates for visualization
   const getArenaFieldCoords = () => {
     if (!jetsonData?.arena || jetsonData.arena.length < 4) return []
@@ -265,6 +358,7 @@ export default function DashboardSafeSpot() {
         </CardHeader>
         <CardContent className="p-0 flex-1 flex flex-col">
           <div className="flex-1 relative bg-green-50 dark:bg-green-950">
+<<<<<<< HEAD
             <svg width="100%" height="100%" viewBox="-10 -14 20 28" className="absolute inset-0" preserveAspectRatio="xMidYMid meet">
               {/* Clipping definition - full expanded arena */}
               <defs>
@@ -282,10 +376,30 @@ export default function DashboardSafeSpot() {
               ))}
               {[-13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map(i => (
                 <line key={`h${i}`} x1="-9" y1={i} x2="9" y2={i} className="stroke-gray-300 dark:stroke-gray-600" strokeWidth="0.05" />
+=======
+            <svg width="100%" height="100%" viewBox="-1 -1 11 14" className="absolute inset-0" preserveAspectRatio="xMidYMid meet">
+              {/* Clipping definition - prevents any shifting of map */}
+              <defs>
+                <clipPath id="fieldClip">
+                  <rect x="-1" y="-1" width="11" height="14" />
+                </clipPath>
+              </defs>
+
+              {/* Expanded field boundary - FIXED FRAME */}
+              <rect x="-1" y="-1" width="11" height="14" className="fill-green-50 dark:fill-green-950" stroke="#000" strokeWidth="0.1" />
+
+              {/* Grid lines (expanded) - FIXED FRAME */}
+              {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(i => (
+                <line key={`v${i}`} x1={i} y1="-1" x2={i} y2="13" className="stroke-gray-300 dark:stroke-gray-600" strokeWidth="0.02" />
+              ))}
+              {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map(i => (
+                <line key={`h${i}`} x1="-1" y1={i} x2="10" y2={i} className="stroke-gray-300 dark:stroke-gray-600" strokeWidth="0.02" />
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
               ))}
 
               {/* All content within clipping bounds */}
               <g clipPath="url(#fieldClip)">
+<<<<<<< HEAD
                 {/* Full Expanded Arena Boundary - MAIN ARENA (-9 to +9, -13 to +13) */}
                 <rect
                   x="-9"
@@ -300,14 +414,37 @@ export default function DashboardSafeSpot() {
 
                 {/* Arena corners - EXPANDED */}
                 {[[-9, -13], [9, -13], [9, 13], [-9, 13]].map(([x, y], index) => (
+=======
+                {/* Competition Arena Boundary - FIXED (9x12m) */}
+                <rect
+                  x="0"
+                  y="0"
+                  width="9"
+                  height="12"
+                  fill="rgba(255,215,0,0.1)"
+                  stroke="#FFD700"
+                  strokeWidth="0.15"
+                  strokeDasharray="0.3,0.1"
+                />
+
+                {/* Arena corners - FIXED */}
+                {[[0, 0], [9, 0], [9, 12], [0, 12]].map(([x, y], index) => (
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                   <circle
                     key={index}
                     cx={x}
                     cy={y}
+<<<<<<< HEAD
                     r="0.3"
                     fill="#FFD700"
                     stroke="#000"
                     strokeWidth="0.1"
+=======
+                    r="0.15"
+                    fill="#FFD700"
+                    stroke="#000"
+                    strokeWidth="0.03"
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                   />
                 ))}
 
@@ -315,7 +452,11 @@ export default function DashboardSafeSpot() {
                 {arenaFieldCoords.length >= 4 && (
                   <g opacity="0.5">
                     <polygon
+<<<<<<< HEAD
                       points={arenaFieldCoords.map(p => `${p.x},${-p.y}`).join(' ')}
+=======
+                      points={arenaFieldCoords.map(p => `${p.x},${12 - p.y}`).join(' ')}
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                       fill="rgba(100,200,255,0.1)"
                       stroke="#64C8FF"
                       strokeWidth="0.08"
@@ -325,7 +466,11 @@ export default function DashboardSafeSpot() {
                       <circle
                         key={index}
                         cx={corner.x}
+<<<<<<< HEAD
                         cy={-corner.y}
+=======
+                        cy={12 - corner.y}
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                         r="0.1"
                         fill="#64C8FF"
                         stroke="#000"
@@ -337,20 +482,36 @@ export default function DashboardSafeSpot() {
 
                 {/* Dynamic Safe spots from Jetson */}
                 {jetsonData?.safeSpots?.map(spot => {
+<<<<<<< HEAD
                   const spotCoords = coordsToFieldCoords(spot)
                   const isDetected = detectedSpots.includes(spot.id)
+=======
+                  const spotCoords = coordsToFieldCoords(spot, jetsonData.arena)
+                  const isDetected = detectedSpots.includes(spot.id)
+                  const isOutsideArena = spotCoords.x < 0 || spotCoords.x > 9 || spotCoords.y < 0 || spotCoords.y > 12
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
 
                   return (
                     <g key={spot.id}>
                       {/* Detection radius circle */}
                       <circle
                         cx={spotCoords.x}
+<<<<<<< HEAD
                         cy={-spotCoords.y}
                         r={DETECTION_THRESHOLD}
                         fill={isDetected ? "rgba(0,255,0,0.2)" : "rgba(0,102,204,0.1)"}
                         stroke={isDetected ? "#00ff00" : "#0066cc"}
                         strokeWidth="0.1"
                         strokeDasharray="0.2,0.2"
+=======
+                        cy={12 - spotCoords.y}
+                        r={DETECTION_THRESHOLD}
+                        fill={isDetected ? "rgba(0,255,0,0.2)" : "rgba(0,102,204,0.1)"}
+                        stroke={isDetected ? "#00ff00" : "#0066cc"}
+                        strokeWidth="0.03"
+                        strokeDasharray="0.1,0.1"
+                        opacity={isOutsideArena ? 0.5 : 1}
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                       >
                         {/* Pulsing animation for detected spots */}
                         {isDetected && (
@@ -360,6 +521,7 @@ export default function DashboardSafeSpot() {
 
                       {/* Safe spot marker */}
                       <rect
+<<<<<<< HEAD
                         x={spotCoords.x - 1.25}
                         y={-spotCoords.y - 1.25}
                         width="2.5"
@@ -367,16 +529,35 @@ export default function DashboardSafeSpot() {
                         fill={isDetected ? "#00ff00" : "#0066cc"}
                         stroke="#000"
                         strokeWidth="0.1"
+=======
+                        x={spotCoords.x - 0.2}
+                        y={12 - spotCoords.y - 0.2}
+                        width="0.4"
+                        height="0.4"
+                        fill={isDetected ? "#00ff00" : "#0066cc"}
+                        stroke="#000"
+                        strokeWidth="0.02"
+                        opacity={isOutsideArena ? 0.5 : 1}
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                       />
 
                       {/* Spot label */}
                       <text
                         x={spotCoords.x}
+<<<<<<< HEAD
                         y={-spotCoords.y + 1.2}
                         textAnchor="middle"
                         fontSize="0.6"
                         className="fill-black dark:fill-white"
                         fontWeight="bold"
+=======
+                        y={12 - spotCoords.y + 0.6}
+                        textAnchor="middle"
+                        fontSize="0.25"
+                        className="fill-black dark:fill-white"
+                        fontWeight="bold"
+                        opacity={isOutsideArena ? 0.5 : 1}
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                       >
                         {spot.id}
                       </text>
@@ -384,6 +565,7 @@ export default function DashboardSafeSpot() {
                       {/* Field coordinates display */}
                       <text
                         x={spotCoords.x}
+<<<<<<< HEAD
                         y={-spotCoords.y + 1.8}
                         textAnchor="middle"
                         fontSize="0.4"
@@ -391,26 +573,66 @@ export default function DashboardSafeSpot() {
                       >
                         ({spotCoords.x.toFixed(1)}m, {spotCoords.y.toFixed(1)}m)
                       </text>
+=======
+                        y={12 - spotCoords.y + 0.9}
+                        textAnchor="middle"
+                        fontSize="0.15"
+                        className="fill-gray-600 dark:fill-gray-400"
+                        opacity={isOutsideArena ? 0.5 : 1}
+                      >
+                        ({spotCoords.x.toFixed(1)}m, {spotCoords.y.toFixed(1)}m)
+                      </text>
+
+                      {/* Out of bounds indicator */}
+                      {isOutsideArena && (
+                        <text
+                          x={spotCoords.x}
+                          y={12 - spotCoords.y - 0.3}
+                          textAnchor="middle"
+                          fontSize="0.15"
+                          fill="#ff0000"
+                          fontWeight="bold"
+                        >
+                          OUT
+                        </text>
+                      )}
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                     </g>
                   )
                 })}
 
                 {/* Uploaded Safe spots from TXT file */}
                 {uploadedSafeSpots.map(spot => {
+<<<<<<< HEAD
                   const spotCoords = coordsToFieldCoords(spot)
                   const isDetected = detectedSpots.includes(spot.id)
+=======
+                  const spotCoords = coordsToFieldCoords(spot, uploadedArena.length > 0 ? uploadedArena : [])
+                  const isDetected = detectedSpots.includes(spot.id)
+                  const isOutsideArena = spotCoords.x < 0 || spotCoords.x > 9 || spotCoords.y < 0 || spotCoords.y > 12
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
 
                   return (
                     <g key={`uploaded-${spot.id}`}>
                       {/* Detection radius circle */}
                       <circle
                         cx={spotCoords.x}
+<<<<<<< HEAD
                         cy={-spotCoords.y}
                         r={DETECTION_THRESHOLD}
                         fill={isDetected ? "rgba(0,255,0,0.2)" : "rgba(0,102,204,0.1)"}
                         stroke={isDetected ? "#00ff00" : "#0066cc"}
                         strokeWidth="0.1"
                         strokeDasharray="0.2,0.2"
+=======
+                        cy={12 - spotCoords.y}
+                        r={DETECTION_THRESHOLD}
+                        fill={isDetected ? "rgba(0,255,0,0.2)" : "rgba(0,102,204,0.1)"}
+                        stroke={isDetected ? "#00ff00" : "#0066cc"}
+                        strokeWidth="0.03"
+                        strokeDasharray="0.1,0.1"
+                        opacity={isOutsideArena ? 0.5 : 1}
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                       >
                         {/* Pulsing animation for detected spots */}
                         {isDetected && (
@@ -420,6 +642,7 @@ export default function DashboardSafeSpot() {
 
                       {/* Safe spot marker (blue square for uploaded spots) */}
                       <rect
+<<<<<<< HEAD
                         x={spotCoords.x - 1.25}
                         y={-spotCoords.y - 1.25}
                         width="2.5"
@@ -427,16 +650,35 @@ export default function DashboardSafeSpot() {
                         fill={isDetected ? "#00ff00" : "#0066cc"}
                         stroke="#000"
                         strokeWidth="0.1"
+=======
+                        x={spotCoords.x - 0.2}
+                        y={12 - spotCoords.y - 0.2}
+                        width="0.4"
+                        height="0.4"
+                        fill={isDetected ? "#00ff00" : "#0066cc"}
+                        stroke="#000"
+                        strokeWidth="0.02"
+                        opacity={isOutsideArena ? 0.5 : 1}
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                       />
 
                       {/* Spot label */}
                       <text
                         x={spotCoords.x}
+<<<<<<< HEAD
                         y={-spotCoords.y + 1.2}
                         textAnchor="middle"
                         fontSize="0.6"
                         className="fill-blue-600 dark:fill-blue-400"
                         fontWeight="bold"
+=======
+                        y={12 - spotCoords.y + 0.6}
+                        textAnchor="middle"
+                        fontSize="0.25"
+                        className="fill-blue-600 dark:fill-blue-400"
+                        fontWeight="bold"
+                        opacity={isOutsideArena ? 0.5 : 1}
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                       >
                         {spot.id}
                       </text>
@@ -444,6 +686,7 @@ export default function DashboardSafeSpot() {
                       {/* Field coordinates display */}
                       <text
                         x={spotCoords.x}
+<<<<<<< HEAD
                         y={-spotCoords.y + 1.8}
                         textAnchor="middle"
                         fontSize="0.4"
@@ -451,6 +694,30 @@ export default function DashboardSafeSpot() {
                       >
                         ({spotCoords.x.toFixed(1)}m, {spotCoords.y.toFixed(1)}m)
                       </text>
+=======
+                        y={12 - spotCoords.y + 0.9}
+                        textAnchor="middle"
+                        fontSize="0.15"
+                        className="fill-blue-500 dark:fill-blue-300"
+                        opacity={isOutsideArena ? 0.5 : 1}
+                      >
+                        ({spotCoords.x.toFixed(1)}m, {spotCoords.y.toFixed(1)}m)
+                      </text>
+
+                      {/* Out of bounds indicator */}
+                      {isOutsideArena && (
+                        <text
+                          x={spotCoords.x}
+                          y={12 - spotCoords.y - 0.3}
+                          textAnchor="middle"
+                          fontSize="0.15"
+                          fill="#ff0000"
+                          fontWeight="bold"
+                        >
+                          OUT
+                        </text>
+                      )}
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                     </g>
                   )
                 })}
@@ -460,7 +727,11 @@ export default function DashboardSafeSpot() {
                   <g>
                     {/* Trail line */}
                     <polyline
+<<<<<<< HEAD
                       points={dronePath.map(point => `${point.x},${-point.y}`).join(' ')}
+=======
+                      points={dronePath.map(point => `${point.x},${12 - point.y}`).join(' ')}
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                       fill="none"
                       stroke="#ff0000"
                       strokeWidth="0.05"
@@ -475,7 +746,11 @@ export default function DashboardSafeSpot() {
                         <circle
                           key={index}
                           cx={point.x}
+<<<<<<< HEAD
                           cy={-point.y}
+=======
+                          cy={12 - point.y}
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                           r="0.03"
                           fill="#ff0000"
                           opacity={opacity}
@@ -487,6 +762,7 @@ export default function DashboardSafeSpot() {
 
                 {/* Current drone position */}
                 <g>
+<<<<<<< HEAD
                   <circle
                     cx={currentPosition.x}
                     cy={-currentPosition.y}
@@ -536,10 +812,72 @@ export default function DashboardSafeSpot() {
                   >
                     ({currentPosition.x.toFixed(1)}, {currentPosition.y.toFixed(1)})
                   </text>
+=======
+                  {(() => {
+                    const isOutsideArena = currentPosition.x < 0 || currentPosition.x > 9 || currentPosition.y < 0 || currentPosition.y > 12
+
+                    return (
+                      <>
+                        <circle
+                          cx={currentPosition.x}
+                          cy={12 - currentPosition.y}
+                          r="0.4"
+                          fill="rgba(255,0,0,0.3)"
+                          stroke="none"
+                        />
+                        <circle
+                          cx={currentPosition.x}
+                          cy={12 - currentPosition.y}
+                          r="0.25"
+                          fill={isOutsideArena ? "#ff8800" : "#ff0000"}
+                          stroke="#000000"
+                          strokeWidth="0.05"
+                        />
+                        <circle
+                          cx={currentPosition.x}
+                          cy={12 - currentPosition.y}
+                          r="0.12"
+                          fill="#ffff00"
+                          stroke="#000000"
+                          strokeWidth="0.02"
+                        />
+
+                        {/* Pulse animation circle */}
+                        <circle
+                          cx={currentPosition.x}
+                          cy={12 - currentPosition.y}
+                          r="0.3"
+                          fill="none"
+                          stroke={isOutsideArena ? "#ff8800" : "#ff0000"}
+                          strokeWidth="0.03"
+                          opacity="0.6"
+                        >
+                          <animate attributeName="r" values="0.3;0.6;0.3" dur="2s" repeatCount="indefinite" />
+                          <animate attributeName="opacity" values="0.6;0;0.6" dur="2s" repeatCount="indefinite" />
+                        </circle>
+
+                        {/* Out of arena warning */}
+                        {isOutsideArena && (
+                          <text
+                            x={currentPosition.x}
+                            y={12 - currentPosition.y - 0.6}
+                            textAnchor="middle"
+                            fontSize="0.2"
+                            fill="#ff0000"
+                            fontWeight="bold"
+                          >
+                            OUT OF ARENA
+                          </text>
+                        )}
+                      </>
+                    )
+                  })()}
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                 </g>
               </g>
 
               {/* Fixed coordinates display */}
+<<<<<<< HEAD
               <text x="0" y="-12" textAnchor="middle" fontSize="0.3" className="fill-gray-600 dark:fill-gray-400">
                 Expanded Arena: 18×26m (-9 to +9, -13 to +13)
               </text>
@@ -558,6 +896,21 @@ export default function DashboardSafeSpot() {
                   </text>
                   <text x="0" y="0.6" textAnchor="middle" fontSize="0.2" fill="#000">
                     All {uploadedSafeSpots.length > 0 ? uploadedSafeSpots.length : 3} Safe Spots Detected!
+=======
+              <text x="4.5" y="0.5" textAnchor="middle" fontSize="0.3" className="fill-gray-600 dark:fill-gray-400">
+                Arena: 9×12m Competition Zone
+              </text>
+
+              {/* Mission Complete Banner */}
+              {detectedSpots.length === 3 && (
+                <>
+                  <rect x="1" y="5" width="7" height="2" fill="rgba(0,255,0,0.8)" stroke="#00ff00" strokeWidth="0.1" rx="0.2" />
+                  <text x="4.5" y="6.2" textAnchor="middle" fontSize="0.4" fill="#000" fontWeight="bold">
+                    🏆 MISSION COMPLETE! 🏆
+                  </text>
+                  <text x="4.5" y="6.6" textAnchor="middle" fontSize="0.2" fill="#000">
+                    All 3 Safe Spots Detected!
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                   </text>
                 </>
               )}

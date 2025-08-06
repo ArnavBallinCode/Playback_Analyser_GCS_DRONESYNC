@@ -4,14 +4,20 @@ import React, { useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
+<<<<<<< HEAD
 import { Play, Pause, Square, Upload, FileText, MapPin, Activity, Gauge } from 'lucide-react'
 import { useAutoCollect } from '@/contexts/auto-collect-context'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+=======
+import { Play, Pause, Square, Upload, FileText, MapPin, Activity } from 'lucide-react'
+import { useAutoCollect } from '@/contexts/auto-collect-context'
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
 
 export function FileUploadPlayback() {
     const fileInputRef = useRef<HTMLInputElement>(null)
     const eventsFileInputRef = useRef<HTMLInputElement>(null)
     const safeSpotsFileInputRef = useRef<HTMLInputElement>(null)
+<<<<<<< HEAD
     
     const { 
         mode, 
@@ -19,6 +25,15 @@ export function FileUploadPlayback() {
         setPlaybackData, 
         isPlaybackPlaying, 
         togglePlayback, 
+=======
+
+    const {
+        mode,
+        setMode,
+        setPlaybackData,
+        isPlaybackPlaying,
+        togglePlayback,
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
         resetPlayback,
         playbackData,
         playbackIndex,
@@ -36,9 +51,15 @@ export function FileUploadPlayback() {
             try {
                 const content = e.target?.result as string
                 const jsonData = JSON.parse(content)
+<<<<<<< HEAD
                 
                 let dataArray: any[] = []
                 
+=======
+
+                let dataArray: any[] = []
+
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                 if (Array.isArray(jsonData)) {
                     dataArray = jsonData
                 } else if (jsonData.data && Array.isArray(jsonData.data)) {
@@ -50,7 +71,11 @@ export function FileUploadPlayback() {
                 setPlaybackData(dataArray)
                 setMode('playback')
                 resetPlayback()
+<<<<<<< HEAD
                 
+=======
+
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                 console.log(`Loaded ${dataArray.length} data points for playback`)
                 console.log('First data point:', dataArray[0])
             } catch (error) {
@@ -71,10 +96,17 @@ export function FileUploadPlayback() {
             try {
                 const content = e.target?.result as string
                 console.log('Events file uploaded:', file.name)
+<<<<<<< HEAD
                 
                 // Trigger custom event to update the events display
                 window.dispatchEvent(new CustomEvent('eventsUploaded', { 
                     detail: { content, fileName: file.name } 
+=======
+
+                // Trigger custom event to update the events display
+                window.dispatchEvent(new CustomEvent('eventsUploaded', {
+                    detail: { content, fileName: file.name }
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                 }))
             } catch (error) {
                 console.error('Error reading events file:', error)
@@ -93,12 +125,20 @@ export function FileUploadPlayback() {
         reader.onload = (e) => {
             try {
                 const content = e.target?.result as string
+<<<<<<< HEAD
                 
+=======
+
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                 // Parse the safe spots format from the TXT file
                 const lines = content.split('\n').filter(line => line.trim())
                 const spots: any[] = []
                 const arena: any = {}
+<<<<<<< HEAD
                 
+=======
+
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                 lines.forEach(line => {
                     if (line.includes('Corner') && line.includes('[')) {
                         const match = line.match(/Corner\d+:\s*\[([^\]]+)\]/)
@@ -120,12 +160,21 @@ export function FileUploadPlayback() {
                         }
                     }
                 })
+<<<<<<< HEAD
                 
                 console.log('Safe spots uploaded:', spots.length, 'spots')
                 
                 // Trigger custom event to update safe spots visualization
                 window.dispatchEvent(new CustomEvent('safeSpotsUploaded', { 
                     detail: { spots, arena, fileName: file.name } 
+=======
+
+                console.log('Safe spots uploaded:', spots.length, 'spots')
+
+                // Trigger custom event to update safe spots visualization
+                window.dispatchEvent(new CustomEvent('safeSpotsUploaded', {
+                    detail: { spots, arena, fileName: file.name }
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                 }))
             } catch (error) {
                 console.error('Error parsing safe spots file:', error)
@@ -167,9 +216,15 @@ export function FileUploadPlayback() {
                             onChange={handleFileUpload}
                             className="hidden"
                         />
+<<<<<<< HEAD
                         <Button 
                             onClick={handleUploadClick}
                             variant="outline" 
+=======
+                        <Button
+                            onClick={handleUploadClick}
+                            variant="outline"
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                             className="w-full"
                             size="sm"
                         >
@@ -187,9 +242,15 @@ export function FileUploadPlayback() {
                             onChange={handleEventsUpload}
                             className="hidden"
                         />
+<<<<<<< HEAD
                         <Button 
                             onClick={handleEventsUploadClick}
                             variant="outline" 
+=======
+                        <Button
+                            onClick={handleEventsUploadClick}
+                            variant="outline"
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                             className="w-full"
                             size="sm"
                         >
@@ -207,9 +268,15 @@ export function FileUploadPlayback() {
                             onChange={handleSafeSpotsUpload}
                             className="hidden"
                         />
+<<<<<<< HEAD
                         <Button 
                             onClick={handleSafeSpotsUploadClick}
                             variant="outline" 
+=======
+                        <Button
+                            onClick={handleSafeSpotsUploadClick}
+                            variant="outline"
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                             className="w-full"
                             size="sm"
                         >
@@ -230,7 +297,11 @@ export function FileUploadPlayback() {
                 {playbackData.length > 0 && (
                     <div className="space-y-3">
                         <div className="flex gap-2">
+<<<<<<< HEAD
                             <Button 
+=======
+                            <Button
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                                 onClick={togglePlayback}
                                 variant="default"
                                 size="sm"
@@ -248,7 +319,11 @@ export function FileUploadPlayback() {
                                     </>
                                 )}
                             </Button>
+<<<<<<< HEAD
                             <Button 
+=======
+                            <Button
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                                 onClick={resetPlayback}
                                 variant="outline"
                                 size="sm"
@@ -256,6 +331,7 @@ export function FileUploadPlayback() {
                                 <Square className="w-4 h-4 mr-2" />
                                 Reset
                             </Button>
+<<<<<<< HEAD
                             
                             {/* Playback Speed Dropdown */}
                             <Select 
@@ -277,6 +353,60 @@ export function FileUploadPlayback() {
                             </Select>
                         </div>
                         
+=======
+                        </div>
+
+                        {/* Speed Controls */}
+                        <div className="flex gap-1 items-center">
+                            <span className="text-sm text-gray-600 mr-2">Speed:</span>
+                            <Button
+                                onClick={() => {
+                                    setPlaybackSpeed(1)
+                                    // Restart playback if currently playing to apply new speed
+                                    if (isPlaybackPlaying) {
+                                        togglePlayback()
+                                        setTimeout(() => togglePlayback(), 100)
+                                    }
+                                }}
+                                variant={playbackSpeed === 1 ? "default" : "outline"}
+                                size="sm"
+                                className="px-3"
+                            >
+                                1x
+                            </Button>
+                            <Button
+                                onClick={() => {
+                                    setPlaybackSpeed(2)
+                                    // Restart playback if currently playing to apply new speed
+                                    if (isPlaybackPlaying) {
+                                        togglePlayback()
+                                        setTimeout(() => togglePlayback(), 100)
+                                    }
+                                }}
+                                variant={playbackSpeed === 2 ? "default" : "outline"}
+                                size="sm"
+                                className="px-3"
+                            >
+                                2x
+                            </Button>
+                            <Button
+                                onClick={() => {
+                                    setPlaybackSpeed(3)
+                                    // Restart playback if currently playing to apply new speed
+                                    if (isPlaybackPlaying) {
+                                        togglePlayback()
+                                        setTimeout(() => togglePlayback(), 100)
+                                    }
+                                }}
+                                variant={playbackSpeed === 3 ? "default" : "outline"}
+                                size="sm"
+                                className="px-3"
+                            >
+                                3x
+                            </Button>
+                        </div>
+
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                         {/* Progress */}
                         <div className="space-y-1">
                             <div className="flex justify-between text-sm text-gray-600">
@@ -286,10 +416,17 @@ export function FileUploadPlayback() {
                                 </span>
                             </div>
                             <div className="w-full bg-gray-200 rounded-full h-2">
+<<<<<<< HEAD
                                 <div 
                                     className="bg-blue-600 h-2 rounded-full transition-all duration-300"
                                     style={{ 
                                         width: `${((playbackIndex + 1) / playbackData.length) * 100}%` 
+=======
+                                <div
+                                    className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                                    style={{
+                                        width: `${((playbackIndex + 1) / playbackData.length) * 100}%`
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                                     }}
                                 />
                             </div>

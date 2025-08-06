@@ -31,7 +31,11 @@ export function AutoCollectProvider({ children }: { children: React.ReactNode })
     const [playbackData, setPlaybackData] = useState<any[]>([])
     const [isPlaybackPlaying, setIsPlaybackPlaying] = useState(false)
     const [playbackIndex, setPlaybackIndex] = useState(0)
+<<<<<<< HEAD
     const [playbackSpeed, setPlaybackSpeed] = useState(1) // 1x speed by default
+=======
+    const [playbackSpeed, setPlaybackSpeed] = useState(1) // 1x, 2x, 3x speed
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
     const intervalRef = useRef<NodeJS.Timeout | null>(null)
     const playbackIntervalRef = useRef<NodeJS.Timeout | null>(null)
 
@@ -42,7 +46,11 @@ export function AutoCollectProvider({ children }: { children: React.ReactNode })
             setGraphData(playbackData.slice(0, playbackIndex + 1))
             return
         }
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
         try {
             const response = await fetch('/api/history-data?days=1', { cache: 'no-store' })
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
@@ -110,6 +118,7 @@ export function AutoCollectProvider({ children }: { children: React.ReactNode })
                         setIsPlaybackPlaying(false)
                         return prevIndex
                     }
+<<<<<<< HEAD
                     
                     // Update telemetry with new index
                     setTelemetryPlaybackIndex(nextIndex)
@@ -120,6 +129,18 @@ export function AutoCollectProvider({ children }: { children: React.ReactNode })
                     return nextIndex
                 })
             }, 1000 / playbackSpeed) // Interval adjusted by speed (1x = 1000ms, 2x = 500ms, etc.)
+=======
+
+                    // Update telemetry with new index
+                    setTelemetryPlaybackIndex(nextIndex)
+                    triggerTelemetryRefresh()
+
+                    console.log(`Playback step: ${nextIndex}/${playbackData.length}`)
+
+                    return nextIndex
+                })
+            }, 1000 / playbackSpeed) // Adjust interval based on speed (1x = 1000ms, 2x = 500ms, 3x = 333ms)
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
         }
     }
 
@@ -135,6 +156,7 @@ export function AutoCollectProvider({ children }: { children: React.ReactNode })
         setGraphData([])
     }
 
+<<<<<<< HEAD
     // Effect to restart playback when speed changes
     useEffect(() => {
         if (isPlaybackPlaying && playbackIntervalRef.current) {
@@ -163,6 +185,8 @@ export function AutoCollectProvider({ children }: { children: React.ReactNode })
         }
     }, [playbackSpeed, playbackData.length, isPlaybackPlaying])
 
+=======
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
     // Update setMode and setPlaybackData to sync with telemetry - simplified
     const updateMode = (newMode: 'live' | 'playback') => {
         setMode(newMode)

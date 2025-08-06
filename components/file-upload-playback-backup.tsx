@@ -11,11 +11,16 @@ export function FileUploadPlayback() {
     const fileInputRef = useRef<HTMLInputElement>(null)
     const eventsFileInputRef = useRef<HTMLInputElement>(null)
     const safeSpotsFileInputRef = useRef<HTMLInputElement>(null)
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
     const [eventsData, setEventsData] = useState<string>('')
     const [safeSpotsData, setSafeSpotsData] = useState<any[]>([])
     const [eventsFileName, setEventsFileName] = useState<string>('')
     const [safeSpotsFileName, setSafeSpotsFileName] = useState<string>('')
+<<<<<<< HEAD
     
     const { 
         mode, 
@@ -26,6 +31,20 @@ export function FileUploadPlayback() {
         resetPlayback,
         playbackData,
         playbackIndex
+=======
+
+    const {
+        mode,
+        setMode,
+        setPlaybackData,
+        isPlaybackPlaying,
+        togglePlayback,
+        resetPlayback,
+        playbackData,
+        playbackIndex,
+        playbackSpeed,
+        setPlaybackSpeed
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
     } = useAutoCollect()
 
     const handleEventsUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,10 +58,17 @@ export function FileUploadPlayback() {
                 setEventsData(content)
                 setEventsFileName(file.name)
                 console.log('Events file uploaded:', file.name)
+<<<<<<< HEAD
                 
                 // Trigger custom event to update the events display
                 window.dispatchEvent(new CustomEvent('eventsUploaded', { 
                     detail: { content, fileName: file.name } 
+=======
+
+                // Trigger custom event to update the events display
+                window.dispatchEvent(new CustomEvent('eventsUploaded', {
+                    detail: { content, fileName: file.name }
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                 }))
             } catch (error) {
                 console.error('Error reading events file:', error)
@@ -60,12 +86,20 @@ export function FileUploadPlayback() {
         reader.onload = (e) => {
             try {
                 const content = e.target?.result as string
+<<<<<<< HEAD
                 
+=======
+
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                 // Parse the safe spots format from the TXT file
                 const lines = content.split('\n').filter(line => line.trim())
                 const spots: any[] = []
                 const arena: any = {}
+<<<<<<< HEAD
                 
+=======
+
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                 lines.forEach(line => {
                     if (line.includes('Corner') && line.includes('[')) {
                         const match = line.match(/Corner\d+:\s*\[([^\]]+)\]/)
@@ -87,6 +121,7 @@ export function FileUploadPlayback() {
                         }
                     }
                 })
+<<<<<<< HEAD
                 
                 setSafeSpotsData(spots)
                 setSafeSpotsFileName(file.name)
@@ -95,6 +130,16 @@ export function FileUploadPlayback() {
                 // Trigger custom event to update safe spots visualization
                 window.dispatchEvent(new CustomEvent('safeSpotsUploaded', { 
                     detail: { spots, arena, fileName: file.name } 
+=======
+
+                setSafeSpotsData(spots)
+                setSafeSpotsFileName(file.name)
+                console.log('Safe spots uploaded:', spots.length, 'spots')
+
+                // Trigger custom event to update safe spots visualization
+                window.dispatchEvent(new CustomEvent('safeSpotsUploaded', {
+                    detail: { spots, arena, fileName: file.name }
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                 }))
             } catch (error) {
                 console.error('Error parsing safe spots file:', error)
@@ -103,6 +148,11 @@ export function FileUploadPlayback() {
         }
         reader.readAsText(file)
     }
+<<<<<<< HEAD
+=======
+
+    const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
         const file = event.target.files?.[0]
         if (!file) return
 
@@ -111,9 +161,15 @@ export function FileUploadPlayback() {
             try {
                 const content = e.target?.result as string
                 const jsonData = JSON.parse(content)
+<<<<<<< HEAD
                 
                 let dataArray: any[] = []
                 
+=======
+
+                let dataArray: any[] = []
+
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                 if (Array.isArray(jsonData)) {
                     dataArray = jsonData
                 } else if (jsonData.data && Array.isArray(jsonData.data)) {
@@ -125,7 +181,11 @@ export function FileUploadPlayback() {
                 setPlaybackData(dataArray)
                 setMode('playback')
                 resetPlayback()
+<<<<<<< HEAD
                 
+=======
+
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                 console.log(`Loaded ${dataArray.length} data points for playback`)
             } catch (error) {
                 console.error('Error parsing JSON file:', error)
@@ -162,7 +222,11 @@ export function FileUploadPlayback() {
         reader.onload = (e) => {
             try {
                 const content = e.target?.result as string
+<<<<<<< HEAD
                 
+=======
+
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                 // Try to parse as JSON first, then as text
                 let spotsData: any[] = []
                 try {
@@ -187,7 +251,11 @@ export function FileUploadPlayback() {
                         }
                     })
                 }
+<<<<<<< HEAD
                 
+=======
+
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                 setSafeSpotsData(spotsData)
                 setSafeSpotsFileName(file.name)
                 console.log('Safe spots file loaded:', file.name, spotsData)
@@ -219,9 +287,15 @@ export function FileUploadPlayback() {
                             onChange={handleFileUpload}
                             className="hidden"
                         />
+<<<<<<< HEAD
                         <Button 
                             onClick={() => fileInputRef.current?.click()}
                             variant="outline" 
+=======
+                        <Button
+                            onClick={() => fileInputRef.current?.click()}
+                            variant="outline"
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                             className="w-full"
                             size="sm"
                         >
@@ -244,9 +318,15 @@ export function FileUploadPlayback() {
                             onChange={handleEventsFileUpload}
                             className="hidden"
                         />
+<<<<<<< HEAD
                         <Button 
                             onClick={() => eventsFileInputRef.current?.click()}
                             variant="outline" 
+=======
+                        <Button
+                            onClick={() => eventsFileInputRef.current?.click()}
+                            variant="outline"
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                             className="w-full"
                             size="sm"
                         >
@@ -269,9 +349,15 @@ export function FileUploadPlayback() {
                             onChange={handleSafeSpotsFileUpload}
                             className="hidden"
                         />
+<<<<<<< HEAD
                         <Button 
                             onClick={() => safeSpotsFileInputRef.current?.click()}
                             variant="outline" 
+=======
+                        <Button
+                            onClick={() => safeSpotsFileInputRef.current?.click()}
+                            variant="outline"
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                             className="w-full"
                             size="sm"
                         >
@@ -290,7 +376,11 @@ export function FileUploadPlayback() {
                 {playbackData.length > 0 && (
                     <div className="space-y-3">
                         <div className="flex gap-2">
+<<<<<<< HEAD
                             <Button 
+=======
+                            <Button
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                                 onClick={togglePlayback}
                                 variant="default"
                                 size="sm"
@@ -308,7 +398,11 @@ export function FileUploadPlayback() {
                                     </>
                                 )}
                             </Button>
+<<<<<<< HEAD
                             <Button 
+=======
+                            <Button
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                                 onClick={resetPlayback}
                                 variant="outline"
                                 size="sm"
@@ -317,7 +411,61 @@ export function FileUploadPlayback() {
                                 Reset
                             </Button>
                         </div>
+<<<<<<< HEAD
                         
+=======
+
+                        {/* Speed Controls */}
+                        <div className="flex gap-1 items-center">
+                            <span className="text-sm text-gray-600 mr-2">Speed:</span>
+                            <Button
+                                onClick={() => {
+                                    setPlaybackSpeed(1)
+                                    // Restart playback if currently playing to apply new speed
+                                    if (isPlaybackPlaying) {
+                                        togglePlayback()
+                                        setTimeout(() => togglePlayback(), 100)
+                                    }
+                                }}
+                                variant={playbackSpeed === 1 ? "default" : "outline"}
+                                size="sm"
+                                className="px-3"
+                            >
+                                1x
+                            </Button>
+                            <Button
+                                onClick={() => {
+                                    setPlaybackSpeed(2)
+                                    // Restart playback if currently playing to apply new speed
+                                    if (isPlaybackPlaying) {
+                                        togglePlayback()
+                                        setTimeout(() => togglePlayback(), 100)
+                                    }
+                                }}
+                                variant={playbackSpeed === 2 ? "default" : "outline"}
+                                size="sm"
+                                className="px-3"
+                            >
+                                2x
+                            </Button>
+                            <Button
+                                onClick={() => {
+                                    setPlaybackSpeed(3)
+                                    // Restart playback if currently playing to apply new speed
+                                    if (isPlaybackPlaying) {
+                                        togglePlayback()
+                                        setTimeout(() => togglePlayback(), 100)
+                                    }
+                                }}
+                                variant={playbackSpeed === 3 ? "default" : "outline"}
+                                size="sm"
+                                className="px-3"
+                            >
+                                3x
+                            </Button>
+                        </div>
+
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                         {/* Progress */}
                         <div className="space-y-1">
                             <div className="flex justify-between text-sm text-gray-600">
@@ -327,10 +475,17 @@ export function FileUploadPlayback() {
                                 </span>
                             </div>
                             <div className="w-full bg-gray-200 rounded-full h-2">
+<<<<<<< HEAD
                                 <div 
                                     className="bg-blue-600 h-2 rounded-full transition-all duration-300"
                                     style={{ 
                                         width: `${((playbackIndex + 1) / playbackData.length) * 100}%` 
+=======
+                                <div
+                                    className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                                    style={{
+                                        width: `${((playbackIndex + 1) / playbackData.length) * 100}%`
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                                     }}
                                 />
                             </div>

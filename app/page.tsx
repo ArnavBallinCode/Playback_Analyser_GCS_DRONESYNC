@@ -33,7 +33,11 @@ const JetsonEventsBox = React.memo(() => {
       spots.forEach((spot: any, index: number) => {
         safeSpotText += `${spot.id}: [${spot.lat}, ${spot.lng}]\n`;
       });
+<<<<<<< HEAD
 
+=======
+      
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
       // Show safe spots info in events display
       setEvents(prev => prev.includes('Events from') ? prev + '\n\n' + safeSpotText : safeSpotText);
     };
@@ -55,6 +59,7 @@ const JetsonEventsBox = React.memo(() => {
         <CardHeader className="py-2 px-3 flex-shrink-0" style={{ contain: 'layout' }}>
           <CardTitle className="text-lg font-semibold">Events Sequence</CardTitle>
         </CardHeader>
+<<<<<<< HEAD
         <CardContent className="p-3 flex-1 flex flex-col overflow-hidden" style={{ contain: 'layout' }}>
           <div className="flex-1 overflow-y-auto overflow-x-hidden border border-gray-200 rounded-md p-2" style={{
             contain: 'layout style paint',
@@ -68,6 +73,14 @@ const JetsonEventsBox = React.memo(() => {
                 minHeight: 'fit-content',
                 margin: 0,
                 padding: 0,
+=======
+        <CardContent className="p-3 flex-1 flex flex-col" style={{ contain: 'layout' }}>
+          <div className="flex-1 overflow-auto" style={{ contain: 'layout style paint' }}>
+            <pre 
+              className="whitespace-pre-wrap text-lg text-gray-800 font-mono leading-relaxed"
+              style={{
+                minHeight: '200px',
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
                 transition: 'none',
                 backfaceVisibility: 'hidden',
                 transform: 'translateZ(0)',
@@ -75,9 +88,13 @@ const JetsonEventsBox = React.memo(() => {
                 contain: 'layout style paint',
                 isolation: 'isolate',
                 WebkitFontSmoothing: 'antialiased',
+<<<<<<< HEAD
                 MozOsxFontSmoothing: 'grayscale',
                 wordBreak: 'break-word',
                 overflowWrap: 'break-word'
+=======
+                MozOsxFontSmoothing: 'grayscale'
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
               }}
             >
               {events}
@@ -102,12 +119,20 @@ export default function DashboardPage() {
     <div className="max-h-screen w-full flex flex-col">
       {/* Auto-collect button at the top of the page */}
       <AutoCollectButton />
+<<<<<<< HEAD
 
+=======
+      
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
       {/* File Upload and Playback Controls */}
       <div className="p-4">
         <FileUploadPlayback />
       </div>
+<<<<<<< HEAD
 
+=======
+      
+>>>>>>> 9f05768cbbf1ce5ba17f048713bda4e399c9a4ec
       <main className="flex-1 h-full w-full">
         {view === 'dashboard' ? (
           <div
