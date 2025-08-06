@@ -1,0 +1,146 @@
+[
+  {
+    "timestamp": "2025-07-30T10:00:00.000Z",
+    "time_boot_ms": 1000,
+    "battery": {
+      "voltage": 12500,
+      "current": -500,
+      "remaining": 85,
+      "temperature": 25
+    },
+    "position": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": -1.5,
+      "lat": 0,
+      "lon": 0,
+      "alt": -1000,
+      "relative_alt": 1500
+    },
+    "velocity": {
+      "vx": 0.1,
+      "vy": 0.0,
+      "vz": 0.05
+    },
+    "attitude": {
+      "roll": 0.05,
+      "pitch": -0.02,
+      "yaw": 1.57,
+      "rollspeed": 0.01,
+      "pitchspeed": -0.005,
+      "yawspeed": 0.1
+    },
+    "imu": {
+      "xacc": -100,
+      "yacc": -50,
+      "zacc": -981,
+      "xgyro": 5,
+      "ygyro": -2,
+      "zgyro": 10,
+      "xmag": -162,
+      "ymag": -271,
+      "zmag": 41
+    },
+    "heartbeat": {
+      "system_status": 5,
+      "base_mode": 89,
+      "custom_mode": 5
+    }
+  },
+  {
+    "timestamp": "2025-07-30T10:00:01.000Z",
+    "time_boot_ms": 2000,
+    "battery": {
+      "voltage": 12480,
+      "current": -520,
+      "remaining": 84,
+      "temperature": 26
+    },
+    "position": {
+      "x": 0.2,
+      "y": 0.1,
+      "z": -2.0,
+      "lat": 0,
+      "lon": 0,
+      "alt": -1000,
+      "relative_alt": 2000
+    },
+    "velocity": {
+      "vx": 0.2,
+      "vy": 0.1,
+      "vz": -0.5
+    },
+    "attitude": {
+      "roll": 0.07,
+      "pitch": -0.03,
+      "yaw": 1.58,
+      "rollspeed": 0.02,
+      "pitchspeed": -0.01,
+      "yawspeed": 0.05
+    },
+    "imu": {
+      "xacc": -120,
+      "yacc": -60,
+      "zacc": -975,
+      "xgyro": 8,
+      "ygyro": -3,
+      "zgyro": 12,
+      "xmag": -165,
+      "ymag": -275,
+      "zmag": 45
+    },
+    "heartbeat": {
+      "system_status": 5,
+      "base_mode": 89,
+      "custom_mode": 5
+    }
+  },
+  {
+    "timestamp": "2025-07-30T10:00:02.000Z",
+    "time_boot_ms": 3000,
+    "battery": {
+      "voltage": 12460,
+      "current": -540,
+      "remaining": 83,
+      "temperature": 27
+    },
+    "position": {
+      "x": 0.5,
+      "y": 0.3,
+      "z": -2.5,
+      "lat": 0,
+      "lon": 0,
+      "alt": -1000,
+      "relative_alt": 2500
+    },
+    "velocity": {
+      "vx": 0.3,
+      "vy": 0.2,
+      "vz": -0.5
+    },
+    "attitude": {
+      "roll": 0.10,
+      "pitch": -0.05,
+      "yaw": 1.60,
+      "rollspeed": 0.03,
+      "pitchspeed": -0.02,
+      "yawspeed": 0.02
+    },
+    "imu": {
+      "xacc": -140,
+      "yacc": -70,
+      "zacc": -970,
+      "xgyro": 10,
+      "ygyro": -5,
+      "zgyro": 8,
+      "xmag": -168,
+      "ymag": -280,
+      "zmag": 50
+    },
+    "heartbeat": {
+      "system_status": 5,
+      "base_mode": 89,
+      "custom_mode": 5
+    }
+  }
+]
